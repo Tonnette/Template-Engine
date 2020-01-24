@@ -1,6 +1,12 @@
 const fs = require('fs');
 // const axios = require("axios");
 const inquirer = require("inquirer");
+// const Employee = require('./lib/Employee')
+
+var engineerDetails = [];
+var internDetails = [];
+var managerDetails = [];
+
 
 function validateName(name) {
     return name !== "";
@@ -105,60 +111,80 @@ const loopQuestion = [
 ]
 
 
-inquirer
-    .prompt(employeeQuestions)
-    .then(({ role }) => {
-        // console.log(role, engineer, role === engineer) ;
-        if (role === engineer) {
-            console.log('Yes, Engineer.')
-            inquirer
-                .prompt(engineerQuestions)
-                .then(({ github }) => {
-                    console.log(github);
-                    finalQuestion();
-                })
-        }
-        else if (role === intern) {
-            console.log("you're an intern");
-            inquirer
-                .prompt(internQuestions)
-                .then(({ school }) => {
-                    console.log(school);
-                    finalQuestion();
-                    
-                })
-        }
-        else if (role === manager) {
-            console.log("you're a manager");
-            inquirer
-                .prompt(managerQuestions)
-                .then(({ phone }) => {
-                    console.log(phone);
-                    finalQuestion();
-                })
-        }
-    })
-
-    function finalQuestion(){
-        inquirer.prompt(loopQuestion)
+    function askQuestion(){
+        initiatePrompts ()
+        
+        .then( () => {
+            return  inquirer.prompt(loopQuestion)
+        })
+        
         .then(({ more }) => {
         if (more === true) {
-            inquirer.prompt(employeeQuestions)
+            askQuestion()
+            
     
         } else {
             console.log("finished!");
+            console.log("engineer data " + JSON.stringify(engineerDetails) + "intern data " + JSON.stringify(internDetails) + "manager data " + JSON.stringify(managerDetails) )
         }
     })
     }
 
     
-    
+
+    function initiatePrompts (){
+        return inquirer
+        .prompt(employeeQuestions)
+        .then(({ username, id, title, email, role }) => {
+            // console.log(role, engineer, role === engineer) ;
+            if (role === engineer) {
+                console.log('Yes, Engineer.')
+                return inquirer
+                    .prompt(engineerQuestions)
+                    .then(({ github }) => {
+                        console.log(github);
+                        engineerDetails.push({username, id, email, title, github})
+                        // engineerDetails.push(new engineer({username, id, email, title, github})
+                        console.log(engineerDetails)
+                     
+                    })
+            }
+            else if (role === intern) {
+                console.log("you're an intern");
+                return inquirer
+                    .prompt(internQuestions)
+                    .then(({ school }) => {
+                        console.log(school);
+                        internDetails.push({username, id, email, title, school})
+                        console.log(internDetails)
+                        
+                        
+                    })
+            }
+            else if (role === manager) {
+                console.log("you're a manager");
+                return inquirer
+                    .prompt(managerQuestions)
+                    .then(({ phone }) => {
+                        console.log(phone);
+                        managerDetails.push({username, id, email, title, phone})
+                        console.log(managerDetails)
+                        
+                    })
+            }
+        })
+
+
+
+    }
+
+
+    // let adam = new Employee(employeeData)
+
+askQuestion()
 
 
 
 
-
-module.exports = {
-
-}
+module.exports = {}
 
