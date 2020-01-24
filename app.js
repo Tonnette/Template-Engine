@@ -1,12 +1,20 @@
 const fs = require('fs');
 // const axios = require("axios");
 const inquirer = require("inquirer");
-// const Employee = require('./lib/Employee')
+const Employee = require('./lib/Employee')
+
+// Initialize a new Employee object
+const e = new Employee();
+// console.log("what is employee? " +employee)
+
+
+
+    // let adam = new Employee(employeeData)
+
 
 var engineerDetails = [];
 var internDetails = [];
 var managerDetails = [];
-
 
 function validateName(name) {
     return name !== "";
@@ -14,8 +22,8 @@ function validateName(name) {
 }
 
 function validateID(id) {
-    var reg = /^\d+$/;
-    return reg.test(id) || "ID should be a number!";
+    var reg = /^\d{3}$/;
+    return reg.test(id) || "ID should be 3 numbers!";
 }
 
 function validatePhone(phone) {
@@ -37,7 +45,7 @@ let manager = 'Manager';
 const employeeQuestions = [
     {
         type: "input",
-        name: "username",
+        name: "name",
         message: "What is your name?",
         validate: validateName,
     },
@@ -47,6 +55,14 @@ const employeeQuestions = [
         message: "What is your ID?",
         validate: validateID,
     },
+    
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email?",
+        validate: ValidateEmail,
+    },
+
     {
         type: "list",
         name: "title",
@@ -57,12 +73,6 @@ const employeeQuestions = [
             "Dr",
             "Ms"
         ],
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is your email?",
-        validate: ValidateEmail,
     },
     {
         type: "list",
@@ -106,36 +116,34 @@ const loopQuestion = [
         name: "more",
         message: "do you want to add another employee?"
     }
-
-
 ]
 
 
-    function askQuestion(){
-        initiatePrompts ()
-        
-        .then( () => {
-            return  inquirer.prompt(loopQuestion)
+function askQuestion() {
+    initiatePrompts()
+
+        .then(() => {
+            return inquirer.prompt(loopQuestion)
         })
-        
+
         .then(({ more }) => {
-        if (more === true) {
-            askQuestion()
-            
-    
-        } else {
-            console.log("finished!");
-            console.log("engineer data " + JSON.stringify(engineerDetails) + "intern data " + JSON.stringify(internDetails) + "manager data " + JSON.stringify(managerDetails) )
-        }
-    })
-    }
+            if (more === true) {
+                askQuestion()
 
-    
 
-    function initiatePrompts (){
-        return inquirer
+            } else {
+                console.log("finished!");
+                console.log("engineer data " + JSON.stringify(engineerDetails) + "intern data " + JSON.stringify(internDetails) + "manager data " + JSON.stringify(managerDetails))
+            }
+        })
+}
+
+
+
+function initiatePrompts() {
+    return inquirer
         .prompt(employeeQuestions)
-        .then(({ username, id, title, email, role }) => {
+        .then(({ name, id, title, email, role }) => {
             // console.log(role, engineer, role === engineer) ;
             if (role === engineer) {
                 console.log('Yes, Engineer.')
@@ -143,10 +151,10 @@ const loopQuestion = [
                     .prompt(engineerQuestions)
                     .then(({ github }) => {
                         console.log(github);
-                        engineerDetails.push({username, id, email, title, github})
-                        // engineerDetails.push(new engineer({username, id, email, title, github})
+                        engineerDetails.push({ name, id, email, title, github })
+                        // engineerDetails.push(new Employee({username, id, email, title, github});
                         console.log(engineerDetails)
-                     
+
                     })
             }
             else if (role === intern) {
@@ -155,10 +163,10 @@ const loopQuestion = [
                     .prompt(internQuestions)
                     .then(({ school }) => {
                         console.log(school);
-                        internDetails.push({username, id, email, title, school})
+                        internDetails.push({ username, id, email, title, school })
                         console.log(internDetails)
-                        
-                        
+
+
                     })
             }
             else if (role === manager) {
@@ -167,24 +175,11 @@ const loopQuestion = [
                     .prompt(managerQuestions)
                     .then(({ phone }) => {
                         console.log(phone);
-                        managerDetails.push({username, id, email, title, phone})
+                        managerDetails.push({ name, id, email, title, phone })
                         console.log(managerDetails)
-                        
+
                     })
             }
         })
-
-
-
-    }
-
-
-    // let adam = new Employee(employeeData)
-
-askQuestion()
-
-
-
-
-module.exports = {}
-
+}
+askQuestion();
