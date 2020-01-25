@@ -173,13 +173,13 @@ function initiatePrompts() {
 
                         fs.readFile('./templates/engineer.html', 'utf8', (err, data) => {
                             console.log(err)
-                            var toPrepand = `<div class = "card"> <h1>ENGINEER</h1><br> <div>Name:  ${engineer.name}</div> <br>
+                            var toPrepand = `<div class = "enginnerCard"> <h1>ENGINEER</h1><br> <div>Name:  ${engineer.name}</div> <br>
                                 <div> ID:  ${engineer.id}</div> <br>
                                 <div> Email:  ${engineer.email}</div> <br>
                                 <div> Github: ${engineer.github}</div> <br>,</div></div>`
                                 // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
-                            fs.appendFile('./templates/engineer.html', toPrepand, 'utf8', (error) => {
+                            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
                                 return error
                             });
 
@@ -203,14 +203,14 @@ function initiatePrompts() {
                         fs.readFile('./templates/intern.html', 'utf8', (err, data) => {
                             console.log(err)
 
-                            var toPrepand = `<div class = "card"> <h1>INTERN</h1><br><div>Name:  ${intern.name}</div> <br>
+                            var toPrepand = `<div class = "internCard"> <h1>INTERN</h1><br><div>Name:  ${intern.name}</div> <br>
                                 <div> ID:  ${intern.id}</div> <br>
                                 <div> Email:  ${intern.email}</div> <br>
                                 <div> School: "${intern.school}</div> <br>,</div></div>`
 
                                 // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
-                            fs.appendFile('./templates/intern.html', toPrepand, 'utf8', (error) => {
+                            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
                                 return error
                             });
 
@@ -236,14 +236,14 @@ function initiatePrompts() {
                         fs.readFile('./templates/manager.html', 'utf8', (err, data) => {
                             console.log(err)
 
-                            var toPrepand = `<div class = "card"> <h1>MANAGER</h1><br><div>Name:  ${manager.name}</div> <br>
+                            var toPrepand = `<div class = "managerCard"> <h1>MANAGER</h1><br><div>Name:  ${manager.name}</div> <br>
                                 <div> ID:  ${manager.id}</div> <br>
                                 <div> Email:  ${manager.email}</div> <br>
                                 <div> Office Number: "${manager.officeNumber}</div> <br>,</div></div>`
 
                                 // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
-                            fs.appendFile('./templates/manager.html', toPrepand, 'utf8', (error) => {
+                            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
                                 return error
                             });
 
