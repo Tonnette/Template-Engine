@@ -1,11 +1,11 @@
 const fs = require('fs');
-// const axios = require("axios");
 const inquirer = require("inquirer");
-// const Employee = require('./lib/Employee')
+const generateHTML = require('./generateHTML');
 const Manager = require('./lib/Manager')
 const Intern = require('./lib/Intern')
+const convertFactory = require('electron-html-to');
 const Engineer = require('./lib/Engineer')
-// const HTML = require('./generateHTML.js')
+
 
 var employeeDetails = [];
 
@@ -134,11 +134,17 @@ function askQuestion() {
                 // console.log("employee data " + JSON.stringify(employeeDetails));
                 var finalOutput = JSON.stringify(employeeDetails);
                 console.log("what is finaloutput " + finalOutput);
-                     
-           
+                console.log("what is employee name " + employeeDetails[0]);
+
+                return generateHTML({ 
+                    ...employeeDetails[0] })
+            }
+            
+        })
+        .then((htmlData) => {
+            console.log(htmlData)
         
 
-            }
         })
 }
 
@@ -161,8 +167,10 @@ function initiatePrompts() {
                         employeeDetails.push({ name, id, email, role, github })
                         // engineerDetails.push(new Employee({username, id, email, title, github});
                         console.log(engineer)
+                        console.log("what is employeeDetails? " + JSON.stringify(employeeDetails))
 
                     })
+                
             }
             else if (role === intern) {
                 console.log("you're an intern");
