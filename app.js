@@ -29,9 +29,9 @@ function validateID(id) {
     return reg.test(id) || "ID should be 3 numbers!";
 }
 
-function validatePhone(phone) {
+function validatePhone(officeNumber) {
     var reg = /^\d{2}$/;
-    return reg.test(phone) || "needs to be 2 numbers long!";
+    return reg.test(officeNumber) || "needs to be 2 numbers long!";
 }
 
 
@@ -100,7 +100,7 @@ const engineerQuestions = [
 const managerQuestions = [
     {
         type: "input",
-        name: "phone",
+        name: "officeNumber",
         message: "What is your office phone?",
         validate: validatePhone,
     }
@@ -179,10 +179,10 @@ function initiatePrompts() {
                 console.log("you're a manager");
                 return inquirer
                     .prompt(managerQuestions)
-                    .then(({ phone }) => {
-                        console.log(phone);
-                        var manager = new Manager ( role, phone )
-                        employeeDetails.push({ name, id, email, role, phone })
+                    .then(({ officeNumber }) => {
+                        console.log(officeNumber);
+                        var manager = new Manager ( role, officeNumber )
+                        employeeDetails.push({ name, id, email, role, officeNumber })
                         console.log(manager)
 
                     })
