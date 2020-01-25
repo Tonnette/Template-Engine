@@ -1,23 +1,18 @@
 const fs = require('fs');
 // const axios = require("axios");
 const inquirer = require("inquirer");
-const Employee = require('./lib/Employee')
+// const Employee = require('./lib/Employee')
 const Manager = require('./lib/Manager')
 const Intern = require('./lib/Intern')
 const Engineer = require('./lib/Engineer')
-
-// Initialize a new Employee object
-// const e = new Employee();
-
-// e.getName();
-    // let adam = new Employee(employeeData)
-
-
-// var engineerDetails = [];
-// var internDetails = [];
-// var managerDetails = [];
+// const HTML = require('./generateHTML.js')
 
 var employeeDetails = [];
+
+// array.js
+
+
+
 
 function validateName(name) {
     return name !== "";
@@ -136,7 +131,13 @@ function askQuestion() {
 
             } else {
                 console.log("finished!");
-                console.log("engineer data " + JSON.stringify(engineerDetails) + "intern data " + JSON.stringify(internDetails) + "manager data " + JSON.stringify(managerDetails))
+                // console.log("employee data " + JSON.stringify(employeeDetails));
+                var finalOutput = JSON.stringify(employeeDetails);
+                console.log("what is finaloutput " + finalOutput);
+                     
+           
+        
+
             }
         })
 }
@@ -155,7 +156,8 @@ function initiatePrompts() {
                     .then(({ github }) => {
                         console.log(github);
                         var engineer = new Engineer (name, id, email, github)
-                        console.log ("wjat is engineer " + engineer.name, engineer.id, engineer.email, engineer.github)
+                        console.log ("wjat is engineer " + engineer.name, engineer.id, engineer.email, engineer.github);
+                        
                         employeeDetails.push({ name, id, email, role, github })
                         // engineerDetails.push(new Employee({username, id, email, title, github});
                         console.log(engineer)
@@ -168,7 +170,7 @@ function initiatePrompts() {
                     .prompt(internQuestions)
                     .then(({ school }) => {
                         console.log(school);
-                        var intern = new Intern ( role, school )
+                        var intern = new Intern ( name, id, email, school )
                         employeeDetails.push({ name, id, email, role, school })
                         console.log(intern)
 
@@ -181,7 +183,7 @@ function initiatePrompts() {
                     .prompt(managerQuestions)
                     .then(({ officeNumber }) => {
                         console.log(officeNumber);
-                        var manager = new Manager ( role, officeNumber )
+                        var manager = new Manager ( name, id, email, officeNumber )
                         employeeDetails.push({ name, id, email, role, officeNumber })
                         console.log(manager)
 
@@ -191,4 +193,6 @@ function initiatePrompts() {
 }
 
 askQuestion()
+
+// module.exports = finalOutput;
 
