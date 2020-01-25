@@ -4,11 +4,10 @@ const inquirer = require("inquirer");
 const Employee = require('./lib/Employee')
 const Manager = require('./lib/Manager')
 const Intern = require('./lib/Intern')
+const Engineer = require('./lib/Engineer')
 
 // Initialize a new Employee object
 // const e = new Employee();
-// console.log("what is employee? " +employee)
-
 
 // e.getName();
     // let adam = new Employee(employeeData)
@@ -67,17 +66,17 @@ const employeeQuestions = [
         validate: ValidateEmail,
     },
 
-    {
-        type: "list",
-        name: "title",
-        message: "What is your title?",
-        choices: [
-            "Mr",
-            "Mrs",
-            "Dr",
-            "Ms"
-        ],
-    },
+    // {
+    //     type: "list",
+    //     name: "title",
+    //     message: "What is your title?",
+    //     choices: [
+    //         "Mr",
+    //         "Mrs",
+    //         "Dr",
+    //         "Ms"
+    //     ],
+    // },
     {
         type: "list",
         name: "role",
@@ -147,19 +146,19 @@ function askQuestion() {
 function initiatePrompts() {
     return inquirer
         .prompt(employeeQuestions)
-        .then(({ name, id, title, email, role }) => {
-            // console.log(role, engineer, role === engineer) ;
+        .then(({ name, id, email, role }) => {
+          
             if (role === engineer) {
                 console.log('Yes, Engineer.')
                 return inquirer
                     .prompt(engineerQuestions)
                     .then(({ github }) => {
                         console.log(github);
-                        var engineer = new Employee ( name, id, email, title, github )
-                        console.log ("wjat is engineer " + engineer.name, engineer.id, engineer.email)
-                        employeeDetails.push({ name, id, email, title, github })
+                        var engineer = new Engineer (name, id, email, github)
+                        console.log ("wjat is engineer " + engineer.name, engineer.id, engineer.email, engineer.github)
+                        employeeDetails.push({ name, id, email, role, github })
                         // engineerDetails.push(new Employee({username, id, email, title, github});
-                        console.log(engineerDetails)
+                        console.log(engineer)
 
                     })
             }
@@ -169,9 +168,9 @@ function initiatePrompts() {
                     .prompt(internQuestions)
                     .then(({ school }) => {
                         console.log(school);
-                        var intern = new Intern ( name, id, email, title, school )
-                        employeeDetails.push({ name, id, email, title, school })
-                        console.log(internDetails)
+                        var intern = new Intern ( role, school )
+                        employeeDetails.push({ name, id, email, role, school })
+                        console.log(intern)
 
 
                     })
@@ -182,8 +181,9 @@ function initiatePrompts() {
                     .prompt(managerQuestions)
                     .then(({ phone }) => {
                         console.log(phone);
-                        managerDetails.push({ name, id, email, title, phone })
-                        console.log(managerDetails)
+                        var manager = new Manager ( role, phone )
+                        employeeDetails.push({ name, id, email, role, phone })
+                        console.log(manager)
 
                     })
             }
