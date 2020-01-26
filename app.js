@@ -54,18 +54,6 @@ const employeeQuestions = [
         message: "What is your email?",
         validate: ValidateEmail,
     },
-
-    // {
-    //     type: "list",
-    //     name: "title",
-    //     message: "What is your title?",
-    //     choices: [
-    //         "Mr",
-    //         "Mrs",
-    //         "Dr",
-    //         "Ms"
-    //     ],
-    // },
     {
         type: "list",
         name: "role",
@@ -125,14 +113,8 @@ function askQuestion() {
 
             } else {
                 console.log("finished!");
-                // console.log("employee data " + JSON.stringify(employeeDetails));
-                var finalOutput = JSON.stringify(employeeDetails);
-                // console.log("what is finaloutput " + finalOutput);
-                // console.log("what is employee name " + employeeDetails[0]);
-
-                // return generateHTML({
-                //     ...employeeDetails[0]
-                // })
+                // var finalOutput = JSON.stringify(employeeDetails);
+              
             }
 
         })
@@ -144,122 +126,83 @@ function askQuestion() {
 }
 
 
-
 function initiatePrompts() {
     return inquirer
         .prompt(employeeQuestions)
         .then(({ name, id, email, role }) => {
-
             if (role === engineer) {
-                console.log('Yes, Engineer.')
                 return inquirer
                     .prompt(engineerQuestions)
                     .then(({ github }) => {
-                        // console.log(github);
                         var engineer = new Engineer(name, id, email, github)
-                        console.log("wjat is engineer " + engineer.name, engineer.id, engineer.email, engineer.github);
-                        // var finalOutput = JSON.stringify(employeeDetails);
-                        console.log(engineer)
-
-
-                        // var toPrepand = "<body><h1>hello world</h1></body>";
-    //             var result = data.replace(/\<style>/g, toPrepand + '<style>');
-
-    //             fs.writeFile('./index.html', result, 'utf8', function (err) {
-    //                 if (err) return console.log(err);
-    //             });
-    //         });
-                      
-
-                        fs.readFile('./templates/engineer.html', 'utf8', (err, data) => {
-                            console.log(err)
-                            var toPrepand = `<div class = "enginnerCard"> <h1>ENGINEER</h1><br> <div>Name:  ${engineer.name}</div> <br>
-                                <div> ID:  ${engineer.id}</div> <br>
-                                <div> Email:  ${engineer.email}</div> <br>
-                                <div> Github: ${engineer.github}</div> <br>,</div></div>`
-                                // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
+                            var toPrepand =`<div class="card internCard" style="width: 30rem;">
+                            <div class="card-header" style="background-color: rgb(91, 238, 182);">
+                               <h1>${engineer.getRole()}</h1></div> <div class="card-body">
+                               <p class="card-text">
+                                  <div class="line"><strong>Name:</strong> ${engineer.name}</div> <br>
+                                  <div class="line"> <strong>ID:</strong> ${engineer.id}</div> <br>
+                                  <div class="line"><strong>Email:</strong> ${engineer.email}</div> <br>
+                                  <div><strong>Github Name:</strong>  ${engineer.github}</div></p></div> </div>`
 
                             fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
                                 return error
-                            });
-
-                            employeeDetails.push({ name, id, email, role, github })
-                            // console.log("what is employeeDetails? " + JSON.stringify(employeeDetails))
-
-                        })
+                            });     
                     });
-
             }
             else if (role === intern) {
-                console.log("you're an intern");
                 return inquirer
                     .prompt(internQuestions)
                     .then(({ school }) => {
-                        console.log(school);
                         var intern = new Intern(name, id, email, school)
                         employeeDetails.push({ name, id, email, role, school })
-                        console.log(intern)
+                            var toPrepand = `<div class="card engineerCard" style="width: 30rem;">
+                                <div class="card-header" style="background-color: rgb(184, 91, 238);">
+                                   <h1>${intern.getRole()}</h1> </div><div class="card-body">
+                                   <p class="card-text">
+                                      <div class="line"><strong>Name:</strong> ${intern.name}</div> <br>
+                                      <div class="line"> <strong>ID:</strong> ${intern.id}</div> <br>
+                                      <div class="line"><strong>Email:</strong> ${intern.email}</div> <br>
+                                      <div><strong>School:</strong> ${intern.school}</div></p></div></div>`
 
-                        fs.readFile('./templates/intern.html', 'utf8', (err, data) => {
-                            console.log(err)
-
-                            var toPrepand = `<div class = "internCard"> <h1>INTERN</h1><br><div>Name:  ${intern.name}</div> <br>
-                                <div> ID:  ${intern.id}</div> <br>
-                                <div> Email:  ${intern.email}</div> <br>
-                                <div> School: "${intern.school}</div> <br>,</div></div>`
-
-                                // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
+                            // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
                             fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
                                 return error
                             });
-
-                        
-
-                            // console.log("what is employeeDetails? " + JSON.stringify(employeeDetails))
-
-                        })
+                    
 
 
                     })
             }
             else if (role === manager) {
-                console.log("you're a manager");
                 return inquirer
                     .prompt(managerQuestions)
                     .then(({ officeNumber }) => {
-                        console.log(officeNumber);
                         var manager = new Manager(name, id, email, officeNumber)
                         employeeDetails.push({ name, id, email, role, officeNumber })
-                        console.log(manager)
+                        var toPrepand = `<div class="card text-center managerCard">
+      <div class="card-header" style="background-color: rgb(91, 201, 238);">
+         <h1>${manager.getRole()}</h1></div> <div class="card-body"><p class="card-text">
+            <div class="line"><strong>Name:</strong> ${manager.name}</div> <br>
+            <div class="line"> <strong>ID:</strong>${manager.id} </div> <br>
+            <div class="line"><strong>Email:</strong>  ${manager.email}</div> <br>
+            <div><strong>Office Number:</strong>${manager.officeNumber} </div></p> </div> </div>`;
 
-                        fs.readFile('./templates/manager.html', 'utf8', (err, data) => {
-                            console.log(err)
+                        // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
-                            var toPrepand = `<div class = "managerCard"> <h1>MANAGER</h1><br><div>Name:  ${manager.name}</div> <br>
-                                <div> ID:  ${manager.id}</div> <br>
-                                <div> Email:  ${manager.email}</div> <br>
-                                <div> Office Number: "${manager.officeNumber}</div> <br>,</div></div>`
+                        fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
+                            return error
+                        });
 
-                                // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
-
-                            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
-                                return error
-                            });
-
-                          
-
-                            // console.log("what is employeeDetails? " + JSON.stringify(employeeDetails))
-
-                        })
 
                     })
-                    
+
+
+
             }
         })
 }
 
 askQuestion()
 
-// module.exports = finalOutput;
 
