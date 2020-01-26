@@ -8,6 +8,15 @@ const Engineer = require('./lib/Engineer')
 
 var employeeDetails = [];
 
+const validateManager = async (role) => {
+    if (role === manager || role === 'manager') {
+        return true;
+    }
+    else{
+        return 'You must be the Manager to continue';
+    }  
+ };
+
 function validateName(name) {
     return name !== "";
 
@@ -61,10 +70,10 @@ const employeeQuestions = [
         choices: [
             engineer,
             intern,
-            manager,
         ],
     },
 ];
+
 
 const engineerQuestions = [
     {
@@ -75,6 +84,33 @@ const engineerQuestions = [
 ]
 
 const managerQuestions = [
+    {
+        type: "input",
+        name: "role",
+        message: "What is your role?",
+        validate: validateManager,
+    },
+    {
+
+        type: "input",
+        name: "name",
+        message: "What is your name?",
+        validate: validateName,
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "What is your ID?",
+        validate: validateID,
+    },
+
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email?",
+        validate: ValidateEmail,
+    },
+
     {
         type: "input",
         name: "officeNumber",
@@ -98,14 +134,29 @@ const loopQuestion = [
     }
 ]
 
+function startQuestions() {
+    return inquirer
+        .prompt(managerQuestions)
+        .then(({ role, name, id, email, officeNumber }) => {
+            var manager = new Manager(name, id, email, officeNumber)
+            employeeDetails.push({ role, name, id, email, officeNumber })
+            var toPrepand = `<div class="card text-center managerCard">
+<div class="card-header" style="background-color: rgb(91, 201, 238);">
+ <h1>${manager.getRole()}</h1></div> <div class="card-body"><p class="card-text">
+    <div class="line"><strong>Name:</strong> ${manager.name}</div> <br>
+    <div class="line"> <strong>ID:</strong>${manager.id} </div> <br>
+    <div class="line"><strong>Email:</strong>  ${manager.email}</div> <br>
+    <div><strong>Office Number:</strong>${manager.officeNumber} </div></p> </div> </div>`;
 
-function askQuestion() {
-    initiatePrompts()
+            // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
+            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
+                return error
+            });
+        })
         .then(() => {
             return inquirer.prompt(loopQuestion)
         })
-
         .then(({ more }) => {
             if (more === true) {
                 askQuestion()
@@ -113,15 +164,29 @@ function askQuestion() {
 
             } else {
                 console.log("finished!");
-                // var finalOutput = JSON.stringify(employeeDetails);
-              
             }
 
         })
-        .then((htmlData) => {
-            console.log(htmlData)
+
+}
 
 
+
+
+
+
+function askQuestion() {
+    initiatePrompts()
+        .then(() => {
+            return inquirer.prompt(loopQuestion)
+        })
+        .then(({ more }) => {
+            if (more === true) {
+                askQuestion()
+            } else {
+                console.log("finished!");
+                // var finalOutput = JSON.stringify(employeeDetails);
+            }
         })
 }
 
@@ -135,7 +200,7 @@ function initiatePrompts() {
                     .prompt(engineerQuestions)
                     .then(({ github }) => {
                         var engineer = new Engineer(name, id, email, github)
-                            var toPrepand =`<div class="card internCard" style="width: 30rem;">
+                        var toPrepand = `<div class="card internCard" style="width: 30rem;">
                             <div class="card-header" style="background-color: rgb(91, 238, 182);">
                                <h1>${engineer.getRole()}</h1></div> <div class="card-body">
                                <p class="card-text">
@@ -144,9 +209,9 @@ function initiatePrompts() {
                                   <div class="line"><strong>Email:</strong> ${engineer.email}</div> <br>
                                   <div><strong>Github Name:</strong>  ${engineer.github}</div></p></div> </div>`
 
-                            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
-                                return error
-                            });     
+                        fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
+                            return error
+                        });
                     });
             }
             else if (role === intern) {
@@ -155,7 +220,7 @@ function initiatePrompts() {
                     .then(({ school }) => {
                         var intern = new Intern(name, id, email, school)
                         employeeDetails.push({ name, id, email, role, school })
-                            var toPrepand = `<div class="card engineerCard" style="width: 30rem;">
+                        var toPrepand = `<div class="card engineerCard" style="width: 30rem;">
                                 <div class="card-header" style="background-color: rgb(184, 91, 238);">
                                    <h1>${intern.getRole()}</h1> </div><div class="card-body">
                                    <p class="card-text">
@@ -164,30 +229,6 @@ function initiatePrompts() {
                                       <div class="line"><strong>Email:</strong> ${intern.email}</div> <br>
                                       <div><strong>School:</strong> ${intern.school}</div></p></div></div>`
 
-                            // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
-
-                            fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
-                                return error
-                            });
-                    
-
-
-                    })
-            }
-            else if (role === manager) {
-                return inquirer
-                    .prompt(managerQuestions)
-                    .then(({ officeNumber }) => {
-                        var manager = new Manager(name, id, email, officeNumber)
-                        employeeDetails.push({ name, id, email, role, officeNumber })
-                        var toPrepand = `<div class="card text-center managerCard">
-      <div class="card-header" style="background-color: rgb(91, 201, 238);">
-         <h1>${manager.getRole()}</h1></div> <div class="card-body"><p class="card-text">
-            <div class="line"><strong>Name:</strong> ${manager.name}</div> <br>
-            <div class="line"> <strong>ID:</strong>${manager.id} </div> <br>
-            <div class="line"><strong>Email:</strong>  ${manager.email}</div> <br>
-            <div><strong>Office Number:</strong>${manager.officeNumber} </div></p> </div> </div>`;
-
                         // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
 
                         fs.appendFile('./templates/main.html', toPrepand, 'utf8', (error) => {
@@ -195,14 +236,13 @@ function initiatePrompts() {
                         });
 
 
+
                     })
-
-
-
             }
+
         })
 }
 
-askQuestion()
 
+startQuestions()
 
