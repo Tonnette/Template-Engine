@@ -153,7 +153,7 @@ function startQuestions() {
 
             var toPrepandManager = createManagerHTML(manager);
             html.push(toPrepandManager)
-            console.log("what is html now? " + html)
+      
 
             fs.appendFile('./templates/manager.html', toPrepandManager, 'utf8', (error) => {
                 return error
@@ -204,7 +204,6 @@ function initiatePrompts() {
                         var engineer = new Engineer(name, id, email, github)
                         var toPrepandEngineer = createEngineerHTML(engineer);
                         html.push(toPrepandEngineer)
-                        console.log("what is html now? " + html)
 
                         fs.appendFile('./templates/engineer.html', toPrepandEngineer, 'utf8', (error) => {
                             return error
@@ -220,7 +219,6 @@ function initiatePrompts() {
 
                         var toPrepandIntern = createInternHTML(intern);
                         html.push(toPrepandIntern)
-                        console.log("what is html now? " + html)
 
                         fs.appendFile('./templates/intern.html', toPrepandIntern, 'utf8', (error) => {
                             return error
@@ -235,41 +233,25 @@ function initiatePrompts() {
 }
 
 function buildTeam() {
-    // append this to main. html
     var allContent = html.join()
-    // console.log("waht is all content? " + allContent)
-    // console.log("what is html at the end? " + html);
-
     fs.appendFile('./templates/main.html', allContent, 'utf8', (error) => {
         return error
     });
 
-    // append closing tags
+    // append closing tags and footer
 
     var footer = ` <footer class = "footer">
     <div class="card-footer text-muted">
        Employee Template Engine <br>
        Copyright ©2020
-
      </div>
   </footer>
-
-
 </body></html>`;
 
 
     fs.appendFile('./templates/main.html', footer, 'utf8', (error) => {
         return error
     });
-
-
-
-
-
-    // 1. handlebar
-    // 2. homegrown Regex ( Sam does nto recommend)
-    // 3. create function to generate html
-
 
 }
 
