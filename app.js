@@ -16,7 +16,7 @@ const validateManager = async (role) => {
     else {
         return 'You must be the Manager to continue';
     }
-};
+}
 
 function validateName(name) {
     return name !== "";
@@ -29,8 +29,8 @@ function validateID(id) {
 }
 
 function validatePhone(officeNumber) {
-    var reg = /^\d{2}$/;
-    return reg.test(officeNumber) || "needs to be 2 numbers long!";
+    var reg = /^\d{5}$/;
+    return reg.test(officeNumber) || "needs to be 5 numbers long!";
 }
 
 
@@ -46,33 +46,34 @@ let manager = 'Manager';
 
 const employeeQuestions = [
     {
+        type: "list",
+        name: "role",
+        message: "What is employee's role?",
+        choices: [
+            engineer,
+            intern,
+        ],
+    },
+    {
         type: "input",
         name: "name",
-        message: "What is your name?",
+        message: "What is employee's name?",
         validate: validateName,
     },
     {
         type: "input",
         name: "id",
-        message: "What is your ID?",
+        message: "What is employee's ID?",
         validate: validateID,
     },
 
     {
         type: "input",
         name: "email",
-        message: "What is your email?",
+        message: "What is employee's email?",
         validate: ValidateEmail,
     },
-    {
-        type: "list",
-        name: "role",
-        message: "What is your role?",
-        choices: [
-            engineer,
-            intern,
-        ],
-    },
+   
 ];
 
 
@@ -80,7 +81,7 @@ const engineerQuestions = [
     {
         type: "input",
         name: "github",
-        message: "What is your Github username?"
+        message: "What is employee's Github username?"
     }
 ]
 
@@ -91,6 +92,7 @@ const managerQuestions = [
         message: "What is your role?",
         validate: validateManager,
     },
+    
     {
 
         type: "input",
@@ -123,7 +125,7 @@ const internQuestions = [
     {
         type: "input",
         name: "school",
-        message: "What school do you go to?"
+        message: "What school does intern go to?"
     }
 ]
 
@@ -135,23 +137,29 @@ const loopQuestion = [
     }
 ]
 let html = []
+
+
 function startQuestions() {
+    var beginHTML = generateHTML()
+    
+    fs.writeFile("./templates/main.html", beginHTML,function(err) {
+
+        if (err) {
+          return console.log(err);
+        }
+
+      
+      });
+
+
     return inquirer
         .prompt(managerQuestions)
         .then(({ role, name, id, email, officeNumber }) => {
             var manager = new Manager(name, id, email, officeNumber)
-            // employeeDetails.push({ role, name, id, email, officeNumber })
-            //             var toPrepand = `<div class="card text-center managerCard">
-            // <div class="card-header" style="background-color: rgb(91, 201, 238);">
-            //  <h1>${manager.getRole()}</h1></div> <div class="card-body"><p class="card-text">
-            //     <div class="line"><strong>Name:</strong> ${manager.name}</div> <br>
-            //     <div class="line"> <strong>ID:</strong>${manager.id} </div> <br>
-            //     <div class="line"><strong>Email:</strong>  ${manager.email}</div> <br>
-            //     <div><strong>Office Number:</strong>${manager.officeNumber} </div></p> </div> </div>`;
+        
 
-            // var result = data.replace(/\<\/body>/g, toPrepand + '</body>');
-
-            var toPrepandManager = createManagerHTML(manager);
+           
+            var toPrepandManager = htmlFunctions.manager(manager);
             html.push(toPrepandManager)
       
 
@@ -175,6 +183,7 @@ function startQuestions() {
         })
 
 }
+       
 
 function askQuestion() {
     initiatePrompts()
@@ -187,7 +196,6 @@ function askQuestion() {
             } else {
                 buildTeam();
                 console.log("finished!");
-                // var finalOutput = JSON.stringify(employeeDetails);
             }
         })
 }
@@ -202,7 +210,7 @@ function initiatePrompts() {
                     .prompt(engineerQuestions)
                     .then(({ github }) => {
                         var engineer = new Engineer(name, id, email, github)
-                        var toPrepandEngineer = createEngineerHTML(engineer);
+                        var toPrepandEngineer = htmlFunctions.engineer(engineer);
                         html.push(toPrepandEngineer)
 
                         fs.appendFile('./templates/engineer.html', toPrepandEngineer, 'utf8', (error) => {
@@ -216,8 +224,8 @@ function initiatePrompts() {
                     .then(({ school }) => {
                         var intern = new Intern(name, id, email, school)
                         employeeDetails.push({ name, id, email, role, school })
-
-                        var toPrepandIntern = createInternHTML(intern);
+                        
+                        var toPrepandIntern = htmlFunctions.intern(intern);
                         html.push(toPrepandIntern)
 
                         fs.appendFile('./templates/intern.html', toPrepandIntern, 'utf8', (error) => {
@@ -233,7 +241,7 @@ function initiatePrompts() {
 }
 
 function buildTeam() {
-    var allContent = html.join()
+    var allContent = html.join('') 
     fs.appendFile('./templates/main.html', allContent, 'utf8', (error) => {
         return error
     });
@@ -254,44 +262,6 @@ function buildTeam() {
     });
 
 }
-
-const createManagerHTML = (manager) => {
-
-    return `<div class="card text-center managerCard">
-    <div class="card-header" style="background-color: rgb(91, 201, 238);">
-     <h1>${manager.getRole()}</h1></div> <div class="card-body"><p class="card-text">
-        <div class="line"><strong>Name:</strong> ${manager.name}</div> <br>
-        <div class="line"> <strong>ID:</strong>${manager.id} </div> <br>
-        <div class="line"><strong>Email:</strong>  ${manager.email}</div> <br>
-        <div><strong>Office Number:</strong>${manager.officeNumber} </div></p> </div> </div>`;
-
-}
-
-const createEngineerHTML = (engineer) => {
-    return `<div class="card internCard" style="width: 30rem;">
-<div class="card-header" style="background-color: rgb(91, 238, 182);">
-   <h1>${engineer.getRole()}</h1></div> <div class="card-body">
-   <p class="card-text">
-      <div class="line"><strong>Name:</strong> ${engineer.name}</div> <br>
-      <div class="line"> <strong>ID:</strong> ${engineer.id}</div> <br>
-      <div class="line"><strong>Email:</strong> ${engineer.email}</div> <br>
-      <div><strong>Github Name:</strong>  ${engineer.github}</div></p></div> </div>`
-
-}
-
-const createInternHTML = (intern) => {
-    return `<div class="card engineerCard" style="width: 30rem;">
-<div class="card-header" style="background-color: rgb(184, 91, 238);">
-   <h1>${intern.getRole()}</h1> </div><div class="card-body">
-   <p class="card-text">
-      <div class="line"><strong>Name:</strong> ${intern.name}</div> <br>
-      <div class="line"> <strong>ID:</strong> ${intern.id}</div> <br>
-      <div class="line"><strong>Email:</strong> ${intern.email}</div> <br>
-      <div><strong>School:</strong> ${intern.school}</div></p></div></div>`
-
-
-}
-
 
 startQuestions()
 
