@@ -5,6 +5,7 @@ const Manager = require('./lib/Manager')
 const Intern = require('./lib/Intern')
 const Engineer = require('./lib/Engineer')
 const htmlFunctions = require('./create')
+const open = require('open');
 
 
 var employeeDetails = [];
@@ -258,10 +259,16 @@ function buildTeam() {
 
 
     fs.appendFile('./templates/main.html', footer, 'utf8', (error) => {
-        return error
-    });
-
+        if (error) {
+            return console.log(error);
+        }
+        open('./templates/main.html');
+    }
+    
+    );
+    
 }
 
 startQuestions()
+
 
