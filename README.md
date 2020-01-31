@@ -7,7 +7,7 @@ This project is a software engineering team generator command line application. 
 ![Node Project Cli](./Template-Engine.gif)
 
 # Screen Shot of my PDF
-![ScreenShot](https://github.com/Tonnette/node-project/blob/master/template.png)
+![ScreenShot](https://github.com/Tonnette/Template-Engine/blob/master/template.png)
 
 
 
