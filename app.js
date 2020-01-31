@@ -164,7 +164,7 @@ function startQuestions() {
             html.push(toPrepandManager)
       
 
-            fs.appendFile('./templates/manager.html', toPrepandManager, 'utf8', (error) => {
+            fs.writeFile('./templates/manager.html', toPrepandManager, 'utf8', (error) => {
                 return error
             });
         })
@@ -214,7 +214,7 @@ function initiatePrompts() {
                         var toPrepandEngineer = htmlFunctions.engineer(engineer);
                         html.push(toPrepandEngineer)
 
-                        fs.appendFile('./templates/engineer.html', toPrepandEngineer, 'utf8', (error) => {
+                        fs.writeFile('./templates/engineer.html', toPrepandEngineer, 'utf8', (error) => {
                             return error
                         });
                     });
@@ -229,7 +229,7 @@ function initiatePrompts() {
                         var toPrepandIntern = htmlFunctions.intern(intern);
                         html.push(toPrepandIntern)
 
-                        fs.appendFile('./templates/intern.html', toPrepandIntern, 'utf8', (error) => {
+                        fs.writeFile('./templates/intern.html', toPrepandIntern, 'utf8', (error) => {
                             return error
                         });
 
@@ -262,10 +262,11 @@ function buildTeam() {
         if (error) {
             return console.log(error);
         }
-        open('./templates/main.html');
+        
     }
     
     );
+    open('./templates/main.html');
     
 }
 
