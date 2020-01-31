@@ -4,7 +4,7 @@ This project is a software engineering team generator command line application. 
 
 
 # Gif
-![Node Project Cli](./Template-Engine.gif)
+![Gif](./Template-Engine.gif)
 
 # Screen Shot of my PDF
 ![ScreenShot](https://github.com/Tonnette/Template-Engine/blob/master/Template.png)
